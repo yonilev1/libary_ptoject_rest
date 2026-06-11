@@ -125,7 +125,18 @@ class BookDB:
         cursor.close()
         conn.close()
         return len(rows)
+    
 
+    def count_active_borrows_by_member(self, member_id):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+        SELECT * FROM book WHERE borrowed_by_member_id = %s ;
+        """, (member_id,))
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return len(rows)
 
 
 Book = BookDB() 
@@ -133,4 +144,4 @@ Book = BookDB()
 print(Book.get_all_books())
 print(Book.set_available(22, False, 17))
 print(Book.get_book_by_id(21))"""
-print(Book.count_by_genre('gf'))
+print(Book.count_active_borrows_by_member(17))
