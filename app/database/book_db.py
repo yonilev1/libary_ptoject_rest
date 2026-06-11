@@ -113,6 +113,18 @@ class BookDB:
         return number of borrowed books
         """
         return self.count_total_books() - self.count_available_books()
+    
+
+    def count_by_genre(self, genre):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+        SELECT * FROM book WHERE genre = %s ;
+        """, (genre,))
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return len(rows)
 
 
 
@@ -121,4 +133,4 @@ Book = BookDB()
 print(Book.get_all_books())
 print(Book.set_available(22, False, 17))
 print(Book.get_book_by_id(21))"""
-print(Book.count_borrowed_books())
+print(Book.count_by_genre('gf'))
