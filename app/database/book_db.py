@@ -86,8 +86,8 @@ class BookDB:
 
 
 
-Book = BookDB()
+Book = BookDB() 
 Book.create_book('t', 't', 'Other')
 print(Book.get_all_books())
 print(Book.set_available(22, False, 17))
-print(Book.get_book_by_id(22))
+print(Book.get_book_by_id(21))
