@@ -28,6 +28,9 @@ class BookDB:
     
 
     def get_all_books(self):
+        """
+        returns list of all books, or empty list if no books
+        """
         conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("""
@@ -40,6 +43,9 @@ class BookDB:
     
 
     def get_book_by_id(self, id):
+        """
+        returns book by id, if does not exist returns None
+        """
         conn = get_connection()
         cursor = conn.cursor()
         cursor.execute("""
@@ -51,6 +57,27 @@ class BookDB:
         return row
     
 
+    def update_book(self, id, data):
+        """
+        update book by id, return 1 if updates else 0
+        """
+        in_parts = [f'{key} = %s' for key in data.keys()]
+        in_str = ", ".join(in_parts)
+        parsed_data =list(data.values()) + [id]
+
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute(f"""
+        UPDATE book SET {in_str} WHERE id = %s;
+        """, parsed_data)
+        conn.commit()
+        did_update = cursor.rowcount
+        cursor.close()
+        conn.close()
+        return did_update
+
 Book = BookDB()
 Book.create_book('t', 't', 'Other')
-print(Book.get_book_by_id(65))
+print(Book.get_all_books())
+print(Book.update_book(14, {'title' : 's', 'author':'fff'}))
+print(Book.get_all_books())
