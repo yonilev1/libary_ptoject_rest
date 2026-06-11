@@ -39,6 +39,18 @@ class BookDB:
         return rows
     
 
+    def get_book_by_id(self, id):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+        SELECT * FROM book WHERE id = %s;
+        """, (id,))
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        return row
+    
+
 Book = BookDB()
 Book.create_book('t', 't', 'Other')
-print(Book.get_all_books())
+print(Book.get_book_by_id(65))
