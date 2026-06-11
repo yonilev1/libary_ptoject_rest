@@ -90,6 +90,21 @@ class BookDB:
         get number of books in the db
         """
         return len(self.get_all_books())
+    
+
+    def count_available_books(self):
+        """
+        returns num of avalible books
+        """
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+        SELECT * FROM book WHERE is_available=True ;
+        """)
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return len(rows)
 
 
 Book = BookDB() 
@@ -97,4 +112,4 @@ Book = BookDB()
 print(Book.get_all_books())
 print(Book.set_available(22, False, 17))
 print(Book.get_book_by_id(21))"""
-print(Book.count_total_books())
+print(Book.count_available_books())
