@@ -85,9 +85,16 @@ class BookDB:
         return self.update_book(id, {'is_available': val, 'borrowed_by_member_id': member_id})
 
 
+    def count_total_books(self):
+        """
+        get number of books in the db
+        """
+        return len(self.get_all_books())
+
 
 Book = BookDB() 
-Book.create_book('t', 't', 'Other')
+"""Book.create_book('t', 't', 'Other')
 print(Book.get_all_books())
 print(Book.set_available(22, False, 17))
-print(Book.get_book_by_id(21))
+print(Book.get_book_by_id(21))"""
+print(Book.count_total_books())
