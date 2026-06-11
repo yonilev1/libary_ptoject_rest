@@ -83,6 +83,7 @@ class BookDB:
         returns 1 if succsses else 0
         """
         return self.update_book(id, {'is_available': val, 'borrowed_by_member_id': member_id})
+        
 
 
     def count_total_books(self):
@@ -105,6 +106,14 @@ class BookDB:
         cursor.close()
         conn.close()
         return len(rows)
+    
+
+    def count_borrowed_books(self):
+        """
+        return number of borrowed books
+        """
+        return self.count_total_books() - self.count_available_books()
+
 
 
 Book = BookDB() 
@@ -112,4 +121,4 @@ Book = BookDB()
 print(Book.get_all_books())
 print(Book.set_available(22, False, 17))
 print(Book.get_book_by_id(21))"""
-print(Book.count_available_books())
+print(Book.count_borrowed_books())
