@@ -10,7 +10,7 @@ class MemeberDb:
         raises: valueerror if genre mot valid
         """
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
 
         if self.email_exists(data['email']):
             raise ValueError('email already exists')
@@ -25,12 +25,13 @@ class MemeberDb:
         conn.close()
         return did_add
     
+
     def email_exists(self, email):
         """
         check if email exist
         """
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
         cursor.execute("""
         SELECT email FROM member WHERE email = %s;
         """, (email,))
@@ -45,7 +46,7 @@ class MemeberDb:
         returns list of all members, or empty list if no members
         """
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
         cursor.execute("""
         SELECT * FROM member;
         """)
@@ -55,9 +56,23 @@ class MemeberDb:
         return rows
     
 
+    def get_member_by_id(self,id):
+        """
+        returns member by id, if does not exist returns None
+        """
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+        SELECT * FROM member WHERE id = %s;
+        """, (id,))
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        return row
+
 
 
 member = MemeberDb()
 """member.create_member({'name':'Yoni', 'email':'yoli@gmail.com'})
 member.create_member({'name':'Yoni', 'email':'yoki@gmail.com'})"""
-print(member.get_all_members())
+print(member.get_member_by_id(54))
