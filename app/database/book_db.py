@@ -11,7 +11,7 @@ class BookDB:
         raises: valueerror if genre mot valid
         """
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
 
         if data['genre'] not in BookDB.VALID_GENRE:
             raise ValueError(f"genre has to be from - Fiction/Non-Fiction/Science/History/Other. not {data['genre']}")
@@ -32,7 +32,7 @@ class BookDB:
         returns list of all books, or empty list if no books
         """
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
         cursor.execute("""
         SELECT * FROM book;
         """)
@@ -47,7 +47,7 @@ class BookDB:
         returns book by id, if does not exist returns None
         """
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
         cursor.execute("""
         SELECT * FROM book WHERE id = %s;
         """, (id,))
@@ -66,7 +66,7 @@ class BookDB:
         parsed_data =list(data.values()) + [id]
 
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
         cursor.execute(f"""
         UPDATE book SET {in_str} WHERE id = %s;
         """, parsed_data)
@@ -98,7 +98,7 @@ class BookDB:
         returns num of avalible books
         """
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
         cursor.execute("""
         SELECT * FROM book WHERE is_available=True ;
         """)
@@ -117,7 +117,7 @@ class BookDB:
 
     def count_by_genre(self, genre):
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
         cursor.execute("""
         SELECT * FROM book WHERE genre = %s ;
         """, (genre,))
@@ -129,7 +129,7 @@ class BookDB:
 
     def count_active_borrows_by_member(self, member_id):
         conn = get_connection()
-        cursor = conn.cursor()
+        cursor = conn.cursor(dictionary=True)
         cursor.execute("""
         SELECT * FROM book WHERE borrowed_by_member_id = %s ;
         """, (member_id,))
