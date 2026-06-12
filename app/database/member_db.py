@@ -117,7 +117,7 @@ class MemeberDb:
         try:
             return self.update_member(id, {'total_borrow': row['total_borrow'] + 1})
         except TypeError as e:
-            return None
+            return row
         
 
     def count_active_members(self):
@@ -145,7 +145,7 @@ class MemeberDb:
         cursor.close()
         conn.close()
         return row
-    
+        
 
 member = MemeberDb()
 """member.create_member({'name':'Yoni', 'email':'yoli@gmail.com'})
