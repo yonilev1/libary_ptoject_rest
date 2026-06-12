@@ -2,7 +2,7 @@ from db_connection import get_connection
 
 class BookDB:
     VALID_GENRE = ['Fiction',' Non-Fiction', 'Science', 'History', 'Other']
-    def create_book(self, title, author, genre):
+    def create_book(self, data):
         """
         create a book and store in db
 
@@ -13,13 +13,13 @@ class BookDB:
         conn = get_connection()
         cursor = conn.cursor()
 
-        if genre not in BookDB.VALID_GENRE:
-            raise ValueError(f"genre has to be from - Fiction/Non-Fiction/Science/History/Other. not {genre}")
+        if data['genre'] not in BookDB.VALID_GENRE:
+            raise ValueError(f"genre has to be from - Fiction/Non-Fiction/Science/History/Other. not {data['genre']}")
         
         cursor.execute("""
         INSERT INTO book (title, author, genre, is_available)
         VALUES(%s, %s, %s, True);
-        """, (title, author, genre))
+        """, (data['title'], data['author'], data['genre']))
         conn.commit()
         did_add = cursor.lastrowid
         cursor.close()
@@ -140,8 +140,8 @@ class BookDB:
 
 
 Book = BookDB() 
-"""Book.create_book('t', 't', 'Other')
+Book.create_book({'title':'hg', 'author':'hg', 'genre':'Other'})
 print(Book.get_all_books())
-print(Book.set_available(22, False, 17))
-print(Book.get_book_by_id(21))"""
-print(Book.count_active_borrows_by_member(17))
+"""print(Book.set_available(22, False, 17))
+print(Book.get_book_by_id(21))
+print(Book.count_active_borrows_by_member(17))"""
