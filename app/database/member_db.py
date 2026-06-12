@@ -89,9 +89,16 @@ class MemeberDb:
         cursor.close()
         conn.close()
         return did_update
+    
+
+    def deactivate_member(self, id):
+        """
+        deactivates member, returns 1if success else 0
+        """
+        return self.update_member(id, {'is_active': False})
 
 
 member = MemeberDb()
 """member.create_member({'name':'Yoni', 'email':'yoli@gmail.com'})
 member.create_member({'name':'Yoni', 'email':'yoki@gmail.com'})"""
-print(member.update_member(11, {'name':'Dave'}))
+print(member.deactivate_member(11))
