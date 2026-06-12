@@ -117,7 +117,7 @@ class MemeberDb:
         try:
             return self.update_member(id, {'total_borrow': row['total_borrow'] + 1})
         except TypeError as e:
-            return 0
+            return None
         
 
     def count_active_members(self):
@@ -129,14 +129,25 @@ class MemeberDb:
         cursor.execute("""
         SELECT COUNT(*) AS active FROM member WHERE is_active = True;
         """)
-        rows = cursor.fetchone()
+        row = cursor.fetchone()
         cursor.close()
         conn.close()
-        return rows['active'] if rows else 0
+        return row['active'] if row else row
+    
 
+    def get_top_member(self):
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True, buffered=True)
+        cursor.execute("""
+        SELECT * FROM member ORDER BY total_borrow desc;
+        """)
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        return row
     
 
 member = MemeberDb()
 """member.create_member({'name':'Yoni', 'email':'yoli@gmail.com'})
 member.vcreate_member({'name':'Yoni', 'email':'yoki@gmail.com'})"""
-print(member.count_active_members())
+print(member.get_top_member())
