@@ -69,10 +69,29 @@ class MemeberDb:
         cursor.close()
         conn.close()
         return row
+    
 
+    def update_member(self, id, data):
+        """
+        update member by id, return 1 if updates else 0
+        """
+        in_parts = [f'{key} = %s' for key in data.keys()]
+        in_str = ", ".join(in_parts)
+        parsed_data =list(data.values()) + [id]
+
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(f"""
+        UPDATE member SET {in_str} WHERE id = %s;
+        """, parsed_data)
+        conn.commit()
+        did_update = cursor.rowcount
+        cursor.close()
+        conn.close()
+        return did_update
 
 
 member = MemeberDb()
 """member.create_member({'name':'Yoni', 'email':'yoli@gmail.com'})
 member.create_member({'name':'Yoni', 'email':'yoki@gmail.com'})"""
-print(member.get_member_by_id(54))
+print(member.update_member(11, {'name':'Dave'}))
