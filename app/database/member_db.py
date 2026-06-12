@@ -40,8 +40,24 @@ class MemeberDb:
         return True if row is not None else False
     
 
+    def get_all_members(self):
+        """
+        returns list of all members, or empty list if no members
+        """
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+        SELECT * FROM member;
+        """)
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return rows
+    
+
 
 
 member = MemeberDb()
-member.create_member({'name':'Yoni', 'email':'yoni@gmail.com'})
-member.create_member({'name':'Yoni', 'email':'yoni@gmail.com'})
+"""member.create_member({'name':'Yoni', 'email':'yoli@gmail.com'})
+member.create_member({'name':'Yoni', 'email':'yoki@gmail.com'})"""
+print(member.get_all_members())
