@@ -1,4 +1,4 @@
-from fastapi import APIRouter,status, HTTPException
+from fastapi import APIRouter,status, HTTPException, Query
 from database import book_db
 from pydantic import BaseModel
 
@@ -37,7 +37,21 @@ def get_all_books():
 @router.get('/books/{id}')
 def get_book_by_id(id:int):
     new_book = book_db.BookDB()
-    get_book =  new_book.get_book_by_id(id)
+    get_book = new_book.get_book_by_id(id)
     if not get_book:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
     return get_book
+
+
+@router.put('/books/{id}')
+def update_book(id:int, book:UpdateBook = Query(...)):
+    dict_book = book.model_dump(exclude_unset=True)
+    new_book = book_db.BookDB()
+    try:
+        updated_book = new_book.update_book(id, dict_book)
+    except Exception as e:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, detail=str(e))
+    if updated_book == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    else:
+        return 'book updated successfully'
