@@ -32,3 +32,12 @@ def create_book(book : CreateBook):
 def get_all_books():
     new_book = book_db.BookDB()
     return new_book.get_all_books()
+
+
+@router.get('/books/{id}')
+def get_book_by_id(id:int):
+    new_book = book_db.BookDB()
+    get_book =  new_book.get_book_by_id(id)
+    if not get_book:
+        raise HTTPException(status.HTTP_404_NOT_FOUND)
+    return get_book
