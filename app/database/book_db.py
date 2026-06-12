@@ -90,7 +90,15 @@ class BookDB:
         """
         get number of books in the db
         """
-        return len(self.get_all_books())
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+        SELECT COUNT(*) AS total FROM book;
+        """)
+        rows = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        return rows['total'] if rows else 0
     
 
     def count_available_books(self):
@@ -100,12 +108,12 @@ class BookDB:
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute("""
-        SELECT * FROM book WHERE is_available=True ;
+        SELECT COUNT(*) AS available FROM book WHERE is_available = True;
         """)
-        rows = cursor.fetchall()
+        rows = cursor.fetchone()
         cursor.close()
         conn.close()
-        return len(rows)
+        return rows['available'] if rows else 0
     
 
     def count_borrowed_books(self):
@@ -140,8 +148,8 @@ class BookDB:
 
 
 Book = BookDB() 
-Book.create_book({'title':'hg', 'author':'hg', 'genre':'Other'})
-print(Book.get_all_books())
+#Book.create_book({'title':'hg', 'author':'hg', 'genre':'Other'})
+print(Book.count_total_books(), Book.count_available_books())
 """print(Book.set_available(22, False, 17))
 print(Book.get_book_by_id(21))
 print(Book.count_active_borrows_by_member(17))"""
