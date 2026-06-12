@@ -93,12 +93,19 @@ class MemeberDb:
 
     def deactivate_member(self, id):
         """
-        deactivates member, returns 1if success else 0
+        deactivates member, returns 1 if success else 0
         """
         return self.update_member(id, {'is_active': False})
+    
 
+    def activate_member(self, id):
+        """
+        activates member, returns 1 if success else 0
+        """
+        return self.update_member(id, {'is_active': True})
+    
 
 member = MemeberDb()
 """member.create_member({'name':'Yoni', 'email':'yoli@gmail.com'})
 member.create_member({'name':'Yoni', 'email':'yoki@gmail.com'})"""
-print(member.deactivate_member(11))
+print(member.activate_member(1))
