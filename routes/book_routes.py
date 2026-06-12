@@ -67,11 +67,11 @@ def borrow_book(id:int, member_id:int):
                 try:
                     lend_book = new_book.set_available(id, 0, member_id)
                 except Exception as e:
-                    raise HTTPException(status.HTTP_400_BAD_REQUEST, detail=str(e))
+                    raise HTTPException(status.HTTP_400_BAD_REQUEST, detail='book already borroed')
                 if lend_book == 0:
-                    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+                    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
                 else:
-                    new_member.increment_borrows(member_id)
+                    new_member.decement_increment_borrows(member_id, 1)
                     return 'book borrowed successfully'
             else:
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='cant borrow more then 3 books')
@@ -79,3 +79,29 @@ def borrow_book(id:int, member_id:int):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'book with id {id} does not exist')
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'member with id {member_id} does not exist')
+    
+
+@router.put('/books/{id}/return/{member_id}')
+def return_book(id:int, member_id:int):
+    new_book = book_db.BookDB()
+    new_member = member_db.MemeberDb()
+    if new_member.get_member_by_id(member_id):
+        if new_book.get_book_by_id(id):
+            if new_book.is_the_book_lent_to_member(id, member_id):
+                try:
+                    return_book = new_book.set_available(id, 1, member_id)
+                except Exception as e:
+                    raise HTTPException(status.HTTP_400_BAD_REQUEST, detail=str(e))
+                if return_book == 0:
+                    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+                else:
+                    new_member.decement_increment_borrows(member_id, -1)
+                    return 'book returned successfully'
+            else:
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='only member that borrowed the book can return it')
+        else:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'book with id {id} does not exist')
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'member with id {member_id} does not exist')
+                
+
