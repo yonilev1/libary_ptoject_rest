@@ -26,3 +26,9 @@ def create_book(book : CreateBook):
             raise HTTPException(status.HTTP_400_BAD_REQUEST)
     except ValueError as e:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, detail=str(e))
+    
+
+@router.get('/books')
+def get_all_books():
+    new_book = book_db.BookDB()
+    return new_book.get_all_books()
