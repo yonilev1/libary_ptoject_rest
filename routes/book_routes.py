@@ -1,5 +1,5 @@
 from fastapi import APIRouter,status, HTTPException, Query
-from database import book_db
+from database import book_db, member_db
 from pydantic import BaseModel
 
 class CreateBook(BaseModel):
@@ -55,3 +55,21 @@ def update_book(id:int, book:UpdateBook = Query(...)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     else:
         return 'book updated successfully'
+    
+
+@router.put('/books/{id}/borrow/{member_id}')
+def borrow_book(id:int, member_id:int):
+    new_book = book_db.BookDB()
+    new_member = member_db.MemeberDb()
+    if new_member.count_borrowes(member_id) == 3:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='cant borrow more then 3 books')
+    try:
+        if new_member.member_exists(member_id):
+            updated_book = new_book.set_available(id, 0, member_id)
+    except Exception as e:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, detail=str(e))
+    if updated_book == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    else:
+        new_member.increment_borrows(member_id)
+        return 'book borrowed successfully'

@@ -1,4 +1,4 @@
-from db_connection import get_connection
+from database.db_connection import get_connection
 
 class BookDB:
     VALID_GENRE = ['Fiction',' Non-Fiction', 'Science', 'History', 'Other']
@@ -85,7 +85,18 @@ class BookDB:
         update book to be avalible/unavalible
         returns 1 if succsses else 0
         """
-        return self.update_book(id, {'is_available': val, 'borrowed_by_member_id': member_id})
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(f"""
+        SELECT is_available FROM book WHERE id = %s;
+        """, (id,))
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        if row['is_available'] is not val:
+            return self.update_book(id, {'is_available': val, 'borrowed_by_member_id': member_id})
+        else:
+            raise ValueError(f'cant change availability, it already {val}')
         
 
 
@@ -150,9 +161,9 @@ class BookDB:
         return len(rows)
 
 
-Book = BookDB() 
+#Book = BookDB() 
 #Book.create_book({'title':'hg', 'author':'hg', 'genre':'Other'})
-print(Book.count_total_books(), Book.count_available_books())
+#print(Book.count_total_books(), Book.count_available_books())
 """print(Book.set_available(22, False, 17))
 print(Book.get_book_by_id(21))
 print(Book.count_active_borrows_by_member(17))"""

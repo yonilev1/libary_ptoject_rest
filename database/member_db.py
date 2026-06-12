@@ -1,4 +1,4 @@
-from db_connection import get_connection
+from database.db_connection import get_connection
 
 class MemeberDb:
     def create_member(self, data):
@@ -41,6 +41,21 @@ class MemeberDb:
         return True if row is not None else False
     
 
+    def member_exists(self, id):
+        """
+        check if user exist
+        """
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+        SELECT * FROM member WHERE id = %s;
+        """, (id,))
+        row = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return True if len(row) > 0 else False
+    
+
     def get_all_members(self):
         """
         returns list of all members, or empty list if no members
@@ -69,6 +84,17 @@ class MemeberDb:
         cursor.close()
         conn.close()
         return row
+    
+    def count_borrowes(self, id):
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+        SELECT total_borrow FROM member WHERE id = %s;
+        """, (id,))
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        return row['total_borrow']
     
 
     def update_member(self, id, data):

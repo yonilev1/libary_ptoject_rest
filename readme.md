@@ -86,7 +86,7 @@ docker run --name mysqlpro -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=library
 |------------------------------------------------------------
 |  name       |VARCHAR(50) |NOT NULL       |member name   |
 |------------------------------------------------------------
-| email       |text      |NOT NULL         |member email  |
+| email       |VARCHAR(255)      |NOT NULL         |member email  |
 |------------------------------------------------------------
 |  is_active   |  BOOLEAN  |   NOT NULL     |    is active  |
 |------------------------------------------------------------
