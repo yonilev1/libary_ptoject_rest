@@ -105,7 +105,23 @@ class MemeberDb:
         return self.update_member(id, {'is_active': True})
     
 
+    def increment_borrows(self, id):
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+        SELECT total_borrow FROM member WHERE id = %s;
+        """, (id,))
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        try:
+            return self.update_member(id, {'total_borrow': row['total_borrow'] + 1})
+        except TypeError as e:
+            return 0
+
+    
+
 member = MemeberDb()
 """member.create_member({'name':'Yoni', 'email':'yoli@gmail.com'})
 member.create_member({'name':'Yoni', 'email':'yoki@gmail.com'})"""
-print(member.activate_member(1))
+print(member.increment_borrows(11))
