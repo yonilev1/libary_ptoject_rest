@@ -138,5 +138,5 @@ class MemeberDb:
 
 member = MemeberDb()
 """member.create_member({'name':'Yoni', 'email':'yoli@gmail.com'})
-member.create_member({'name':'Yoni', 'email':'yoki@gmail.com'})"""
+member.vcreate_member({'name':'Yoni', 'email':'yoki@gmail.com'})"""
 print(member.count_active_members())
