@@ -65,3 +65,12 @@ def deactivate_member(id:int):
     except Exception as e:
         raise
     return 'member deactivated successfully'
+
+
+@router.put('/members/{id}/activate')
+def activate_member(id:int):
+    try:
+        active = update_member(id, UpdateMember(is_active=True))
+    except Exception as e:
+        raise
+    return 'member activated successfully'
