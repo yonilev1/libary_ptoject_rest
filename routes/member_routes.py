@@ -10,7 +10,7 @@ class UpdateMember(BaseModel):
     name:str | None = None
     email:str | None = None
     is_active:str | None = None
-    total_borrow:bool | None = None
+    total_borrow:int | None = None
 
 router = APIRouter()
 
@@ -39,3 +39,17 @@ def get_member_by_id(id:int):
     if not get_member:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
     return get_member
+
+
+@router.put('/members/{id}')
+def update_member(id:int, member:UpdateMember = Query(...)):
+    dict_member = member.model_dump(exclude_unset=True)
+    new_member = member_db.MemeberDb()
+    try:
+        updated_member = new_member.update_member(id, dict_member)
+    except Exception as e:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, detail=str(e))
+    if updated_member == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    else:
+        return 'member updated successfully'
