@@ -13,7 +13,7 @@ def create_tables():
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("""
-        CREATE TABLE member (
+        CREATE TABLE IF NOT EXIST member (
             id INT AUTO_INCREMENT PRIMARY KEY, 
             email VARCHAR(255) NOT NULL UNIQUE, 
             name VARCHAR(50) NOT NULL ,
@@ -24,7 +24,7 @@ def create_tables():
     cursor.close()
     cursor = conn.cursor()
     cursor.execute("""
-        CREATE TABLE book (
+        CREATE TABLE IF NOT EXIS book (
             id INT AUTO_INCREMENT PRIMARY KEY, 
             title VARCHAR(50) NOT NULL, 
             author VARCHAR(50) NOT NULL ,

@@ -193,4 +193,4 @@ class MemeberDb:
         row = cursor.fetchone()
         cursor.close()
         conn.close()
-        return row
+        return [] if row is None else row
