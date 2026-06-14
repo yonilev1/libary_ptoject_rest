@@ -1,8 +1,11 @@
-from database.db_connection import get_connection
+from database.db_connection import DbConnection
 from logs import logger
 
 
 my_logger = logger.get_logger('library_member_db')
+connect = DbConnection()
+connection = connect.get_connection()
+
 class MemeberDb:
     def create_member(self, data):
         """
@@ -12,7 +15,7 @@ class MemeberDb:
 
         raises: valueerror if genre mot valid
         """
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
 
         if self.email_exists(data['email']):
@@ -35,7 +38,7 @@ class MemeberDb:
         """
         check if email exist
         """
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to check if email already exists') 
         cursor.execute("""
@@ -51,7 +54,7 @@ class MemeberDb:
         """
         returns list of all members, or empty list if no members
         """
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to get all users') 
         cursor.execute("""
@@ -67,7 +70,7 @@ class MemeberDb:
         """
         returns member by id, if does not exist returns None
         """
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to get user by id') 
         cursor.execute("""
@@ -79,7 +82,7 @@ class MemeberDb:
         return row
     
     def count_borrowes(self, id):
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to count members active borrows') 
         cursor.execute("""
@@ -101,7 +104,7 @@ class MemeberDb:
         in_str = ", ".join(in_parts)
         parsed_data =list(data.values()) + [id]
 
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to check if member allready exists') 
         cursor.execute("""
@@ -139,7 +142,7 @@ class MemeberDb:
     
 
     def is_active_member(self, id):
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to check if user is active') 
         cursor.execute("""
@@ -152,7 +155,7 @@ class MemeberDb:
         
 
     def increment_total_borrows(self, id):
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to increment_total_borrows') 
         cursor.execute("""
@@ -171,7 +174,7 @@ class MemeberDb:
         """
         returns num of active members
         """
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to count_active_members')
         cursor.execute("""
@@ -184,7 +187,7 @@ class MemeberDb:
     
 
     def get_top_member(self):
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True, buffered=True)
         my_logger.info('connecting SQL to get_top_member')
         cursor.execute("""

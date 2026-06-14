@@ -65,6 +65,9 @@ def update_book(id:int, book:UpdateBook = Query(...)):
         my_logger.exception(f'couldnt create book {e}')
         raise HTTPException(status.HTTP_400_BAD_REQUEST, detail=str(e))
     if updated_book == 0:
+        my_logger.error(f'member is already {book}')
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'member is already {dict_book}')
+    if updated_book == -1:
         my_logger.error(f'book {id} does not exist')
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     else:

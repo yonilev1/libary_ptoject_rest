@@ -141,3 +141,172 @@ Traceback (most recent call last):
   File "C:\Users\Yonil\idf_pro_exc\routes\member_routes.py", line 67, in update_member
     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'member is already {dict_member}')
 fastapi.exceptions.HTTPException: 400: member is already {'is_active': True}
+2026-06-14 16:26:16,976 | INFO | in route get book by id
+2026-06-14 16:26:17,186 | INFO | connecting SQL to get_book_by_id
+2026-06-14 16:26:17,192 | ERROR | book 565 does not exist
+2026-06-14 17:20:13,178 | INFO | in route get all books
+2026-06-14 17:20:13,179 | INFO | returning all books
+2026-06-14 17:20:13,183 | INFO | connecting SQL to get_all_books
+2026-06-14 17:26:18,047 | INFO | in route create book
+2026-06-14 17:26:18,053 | INFO | connecting SQL to create book
+2026-06-14 17:26:18,104 | INFO | finished to create book
+2026-06-14 17:26:38,861 | INFO | in route create book
+2026-06-14 17:26:39,418 | INFO | in route create book
+2026-06-14 17:26:50,941 | INFO | in route create member
+2026-06-14 17:26:50,953 | INFO | connecting SQL to check if email already exists
+2026-06-14 17:26:50,964 | INFO | connecting SQL to create member
+2026-06-14 17:26:50,964 | INFO | connecting SQL to check if create member
+2026-06-14 17:26:51,962 | INFO | in route create member
+2026-06-14 17:28:45,522 | INFO | in route create book
+2026-06-14 17:28:45,525 | INFO | connecting SQL to create book
+2026-06-14 17:28:45,540 | INFO | finished to create book
+2026-06-14 17:28:48,233 | INFO | in route create book
+2026-06-14 17:33:32,087 | INFO | in route create book
+2026-06-14 17:33:32,112 | INFO | connecting SQL to create book
+2026-06-14 17:33:32,157 | INFO | finished to create book
+2026-06-14 17:33:46,964 | INFO | in route create member
+2026-06-14 17:33:47,021 | INFO | connecting SQL to check if email already exists
+2026-06-14 17:33:47,024 | INFO | connecting SQL to create member
+2026-06-14 17:33:47,025 | INFO | connecting SQL to check if create member
+2026-06-14 17:33:47,038 | INFO | finished to create member
+2026-06-14 17:33:49,902 | INFO | in route create member
+2026-06-14 17:33:49,982 | INFO | connecting SQL to check if email already exists
+2026-06-14 17:33:49,990 | ERROR | value error accured email already exists
+Traceback (most recent call last):
+  File "C:\Users\Yonil\idf_pro_exc\routes\member_routes.py", line 25, in create_member
+    new_member_id = new_member.create_member(dict_member)
+  File "C:\Users\Yonil\idf_pro_exc\database\member_db.py", line 22, in create_member
+    raise ValueError('email already exists')
+ValueError: email already exists
+2026-06-14 17:34:28,911 | INFO | in route get all books
+2026-06-14 17:34:28,912 | INFO | returning all books
+2026-06-14 17:34:28,986 | INFO | connecting SQL to get_all_books
+2026-06-14 17:34:32,591 | INFO | in route get all books
+2026-06-14 17:34:32,591 | INFO | returning all books
+2026-06-14 17:34:32,622 | INFO | connecting SQL to get_all_books
+2026-06-14 17:34:39,247 | INFO | in route get book by id
+2026-06-14 17:34:39,305 | INFO | connecting SQL to get_book_by_id
+2026-06-14 17:34:39,308 | INFO | returning book with id 1
+2026-06-14 17:34:42,506 | INFO | in route get book by id
+2026-06-14 17:34:42,536 | INFO | connecting SQL to get_book_by_id
+2026-06-14 17:34:42,539 | INFO | returning book with id 2
+2026-06-14 17:34:52,572 | INFO | in route get all members
+2026-06-14 17:34:52,572 | INFO | returning all members
+2026-06-14 17:34:52,606 | INFO | connecting SQL to get all users
+2026-06-14 17:34:55,024 | INFO | in route get all members
+2026-06-14 17:34:55,024 | INFO | returning all members
+2026-06-14 17:34:55,066 | INFO | connecting SQL to get all users
+2026-06-14 17:35:05,144 | INFO | in route get member by id
+2026-06-14 17:35:05,172 | INFO | connecting SQL to get user by id
+2026-06-14 17:35:05,176 | INFO | returning member with id 1
+2026-06-14 17:35:07,472 | INFO | in route get member by id
+2026-06-14 17:35:07,496 | INFO | connecting SQL to get user by id
+2026-06-14 17:35:07,500 | INFO | returning member with id 1
+2026-06-14 17:35:09,973 | INFO | in route get member by id
+2026-06-14 17:35:09,999 | INFO | connecting SQL to get user by id
+2026-06-14 17:35:10,003 | ERROR | member 2 does not exist
+2026-06-14 17:35:16,277 | INFO | connecting SQL to count_total_books
+2026-06-14 17:35:16,317 | INFO | connecting SQL to count_available_books
+2026-06-14 17:35:16,345 | INFO | connecting SQL to count_active_members
+2026-06-14 17:35:22,624 | INFO | connecting SQL to count_by_genre
+2026-06-14 17:35:28,808 | INFO | connecting SQL to get_top_member
+2026-06-14 17:35:41,542 | INFO | in route create member
+2026-06-14 17:35:41,618 | INFO | connecting SQL to check if email already exists
+2026-06-14 17:35:41,621 | INFO | connecting SQL to create member
+2026-06-14 17:35:41,621 | INFO | connecting SQL to check if create member
+2026-06-14 17:35:41,639 | INFO | finished to create member
+2026-06-14 17:35:44,104 | INFO | in route create member
+2026-06-14 17:35:44,154 | INFO | connecting SQL to check if email already exists
+2026-06-14 17:35:44,158 | ERROR | value error accured email already exists
+Traceback (most recent call last):
+  File "C:\Users\Yonil\idf_pro_exc\routes\member_routes.py", line 25, in create_member
+    new_member_id = new_member.create_member(dict_member)
+  File "C:\Users\Yonil\idf_pro_exc\database\member_db.py", line 22, in create_member
+    raise ValueError('email already exists')
+ValueError: email already exists
+2026-06-14 17:35:56,828 | INFO | in route borrow book
+2026-06-14 17:35:56,854 | INFO | connecting SQL to get user by id
+2026-06-14 17:35:56,882 | INFO | connecting SQL to check if user is active
+2026-06-14 17:35:56,912 | INFO | connecting SQL to get_book_by_id
+2026-06-14 17:35:56,942 | INFO | connecting SQL to how_meny_books_member_borrowed
+2026-06-14 17:35:56,971 | INFO | connecting SQL to set_available
+2026-06-14 17:35:57,000 | INFO | connecting SQL to update_book
+2026-06-14 17:35:57,072 | INFO | connecting SQL to increment_total_borrows
+2026-06-14 17:35:57,101 | INFO | connecting SQL to check if member allready exists
+2026-06-14 17:35:57,106 | INFO | connecting SQL to set updated values
+2026-06-14 17:35:57,118 | INFO | book 1 borrowed successfully by member 1
+2026-06-14 17:36:00,074 | INFO | in route borrow book
+2026-06-14 17:36:00,110 | INFO | connecting SQL to get user by id
+2026-06-14 17:36:00,140 | INFO | connecting SQL to check if user is active
+2026-06-14 17:36:00,169 | INFO | connecting SQL to get_book_by_id
+2026-06-14 17:36:00,198 | INFO | connecting SQL to how_meny_books_member_borrowed
+2026-06-14 17:36:00,229 | INFO | connecting SQL to set_available
+2026-06-14 17:36:00,232 | ERROR | couldnt lend book cant change availability, it already 0
+Traceback (most recent call last):
+  File "C:\Users\Yonil\idf_pro_exc\routes\book_routes.py", line 85, in borrow_book
+    lend_book = new_book.set_available(id, 0, member_id)
+  File "C:\Users\Yonil\idf_pro_exc\database\book_db.py", line 111, in set_available
+    raise ValueError(f'cant change availability, it already {val}')
+ValueError: cant change availability, it already 0
+2026-06-14 17:36:08,767 | INFO | in route return book
+2026-06-14 17:36:08,792 | INFO | connecting SQL to get user by id
+2026-06-14 17:36:08,815 | INFO | connecting SQL to get_book_by_id
+2026-06-14 17:36:08,839 | INFO | connecting SQL to is_the_book_lent_and_to_member
+2026-06-14 17:36:08,843 | ERROR | Book is not borrowed by this member
+2026-06-14 17:36:12,692 | INFO | in route return book
+2026-06-14 17:36:12,740 | INFO | connecting SQL to get user by id
+2026-06-14 17:36:12,786 | INFO | connecting SQL to get_book_by_id
+2026-06-14 17:36:12,809 | INFO | connecting SQL to is_the_book_lent_and_to_member
+2026-06-14 17:36:12,813 | ERROR | Book is not borrowed
+2026-06-14 17:36:17,087 | INFO | in route return book
+2026-06-14 17:36:17,146 | INFO | connecting SQL to get user by id
+2026-06-14 17:36:17,172 | INFO | connecting SQL to get_book_by_id
+2026-06-14 17:36:17,201 | INFO | connecting SQL to is_the_book_lent_and_to_member
+2026-06-14 17:36:17,230 | INFO | connecting SQL to set_available
+2026-06-14 17:36:17,260 | INFO | connecting SQL to update_book
+2026-06-14 17:36:17,304 | INFO | book 1 returned successfully by member 1
+2026-06-14 17:36:25,755 | INFO | in route deactivate member
+2026-06-14 17:36:25,756 | INFO | in route update member
+2026-06-14 17:36:25,796 | INFO | connecting SQL to check if member allready exists
+2026-06-14 17:36:25,800 | INFO | connecting SQL to set updated values
+2026-06-14 17:36:25,845 | INFO | finished to update member 1
+2026-06-14 17:36:25,845 | INFO | finished to deactivate member 1
+2026-06-14 17:36:27,968 | INFO | in route deactivate member
+2026-06-14 17:36:27,968 | INFO | in route update member
+2026-06-14 17:36:28,007 | INFO | connecting SQL to check if member allready exists
+2026-06-14 17:36:28,014 | INFO | connecting SQL to set updated values
+2026-06-14 17:36:28,019 | ERROR | member is already name=None email=None is_active=False total_borrow=None
+2026-06-14 17:36:28,049 | ERROR | couldnt deactivate member 400: member is already {'is_active': False}
+Traceback (most recent call last):
+  File "C:\Users\Yonil\idf_pro_exc\routes\member_routes.py", line 81, in deactivate_member
+    deactive = update_member(id, UpdateMember(is_active=False))
+  File "C:\Users\Yonil\idf_pro_exc\routes\member_routes.py", line 67, in update_member
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'member is already {dict_member}')
+fastapi.exceptions.HTTPException: 400: member is already {'is_active': False}
+2026-06-14 17:36:34,889 | INFO | in route activate member
+2026-06-14 17:36:34,890 | INFO | in route update member
+2026-06-14 17:36:34,923 | INFO | connecting SQL to check if member allready exists
+2026-06-14 17:36:34,929 | INFO | connecting SQL to set updated values
+2026-06-14 17:36:34,972 | INFO | finished to update member 1
+2026-06-14 17:36:34,973 | INFO | finished to activate member 1
+2026-06-14 17:36:37,691 | INFO | in route activate member
+2026-06-14 17:36:37,691 | INFO | in route update member
+2026-06-14 17:36:37,786 | INFO | connecting SQL to check if member allready exists
+2026-06-14 17:36:37,799 | INFO | connecting SQL to set updated values
+2026-06-14 17:36:37,810 | ERROR | member is already name=None email=None is_active=True total_borrow=None
+2026-06-14 17:36:37,810 | ERROR | couldnt activate member 400: member is already {'is_active': True}
+Traceback (most recent call last):
+  File "C:\Users\Yonil\idf_pro_exc\routes\member_routes.py", line 93, in activate_member
+    active = update_member(id, UpdateMember(is_active=True))
+  File "C:\Users\Yonil\idf_pro_exc\routes\member_routes.py", line 67, in update_member
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'member is already {dict_member}')
+fastapi.exceptions.HTTPException: 400: member is already {'is_active': True}
+2026-06-14 17:36:53,381 | INFO | in route update book
+2026-06-14 17:36:53,411 | INFO | connecting SQL to update_book
+2026-06-14 17:36:53,424 | INFO | finished to update book 1
+2026-06-14 17:36:56,052 | INFO | in route update book
+2026-06-14 17:36:56,108 | INFO | connecting SQL to update_book
+2026-06-14 17:36:56,120 | ERROR | book 1 does not exist
+2026-06-14 17:37:08,388 | INFO | in route update book
+2026-06-14 17:37:08,411 | INFO | connecting SQL to update_book
+2026-06-14 17:37:08,416 | ERROR | book 1 does not exist

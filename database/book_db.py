@@ -1,8 +1,9 @@
-from database.db_connection import get_connection
+from database.db_connection import DbConnection
 from logs import logger
 
 
 my_logger = logger.get_logger('library_book_db')
+connect = DbConnection()
 
 class BookDB:
     VALID_GENRE = ['Fiction',' Non-Fiction', 'Science', 'History', 'Other']
@@ -14,7 +15,7 @@ class BookDB:
 
         raises: valueerror if genre mot valid
         """
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
 
         if data['genre'] not in BookDB.VALID_GENRE:
@@ -36,7 +37,7 @@ class BookDB:
         """
         returns list of all books, or empty list if no books
         """
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to get_all_books')
         cursor.execute("""
@@ -52,7 +53,7 @@ class BookDB:
         """
         returns book by id, if does not exist returns None
         """
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to get_book_by_id')
         cursor.execute("""
@@ -75,8 +76,19 @@ class BookDB:
         in_str = ", ".join(in_parts)
         parsed_data =list(data.values()) + [id]
 
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
+
+        my_logger.info('connecting SQL to check if book exists') 
+        cursor.execute("""
+        SELECT COUNT(*) FROM book WHERE id = %s
+        """,(id,))
+        row = cursor.fetchone()['COUNT(*)']
+        if row == 0:
+            return -1
+        
+        cursor.close()
+        cursor = conn.cursor()
         my_logger.info('connecting SQL to update_book')
         cursor.execute(f"""
         UPDATE book SET {in_str} WHERE id = %s;
@@ -93,7 +105,7 @@ class BookDB:
         update book to be avalible/unavalible
         returns 1 if succsses else 0
         """
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to set_available')
         cursor.execute(f"""
@@ -115,7 +127,7 @@ class BookDB:
         """
         get number of books in the db
         """
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to count_total_books')
         cursor.execute("""
@@ -131,7 +143,7 @@ class BookDB:
         """
         returns num of avalible books
         """
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to count_available_books')
         cursor.execute("""
@@ -151,7 +163,7 @@ class BookDB:
     
 
     def count_by_genre(self):
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to count_by_genre')
         cursor.execute("""
@@ -164,7 +176,7 @@ class BookDB:
     
 
     def count_active_borrows_by_member(self, member_id):
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to count_active_borrows_by_member')
         cursor.execute("""
@@ -177,7 +189,7 @@ class BookDB:
     
 
     def is_the_book_lent_and_to_member(self, id, member_id):
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to is_the_book_lent_and_to_member')
         cursor.execute("""
@@ -195,7 +207,7 @@ class BookDB:
     
     
     def how_meny_books_member_borrowed(self, member_id):
-        conn = get_connection()
+        conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)
         my_logger.info('connecting SQL to how_meny_books_member_borrowed')
         cursor.execute("""
