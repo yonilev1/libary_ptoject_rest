@@ -94,6 +94,8 @@ class BookDB:
         cursor.close()
         conn.close()
         if row['is_available'] is not val:
+            if row['is_available'] is 0:
+                return self.update_book(id, {'is_available': val, 'borrowed_by_member_id': None})
             return self.update_book(id, {'is_available': val, 'borrowed_by_member_id': member_id})
         else:
             raise ValueError(f'cant change availability, it already {val}')
@@ -137,16 +139,16 @@ class BookDB:
         return self.count_total_books() - self.count_available_books()
     
 
-    def count_by_genre(self, genre):
+    def count_by_genre(self):
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute("""
-        SELECT * FROM book WHERE genre = %s ;
-        """, (genre,))
+        SELECT genre as Genre, COUNT(*) as COUNT FROM book GROUP BY genre ;
+        """)
         rows = cursor.fetchall()
         cursor.close()
         conn.close()
-        return len(rows)
+        return rows
     
 
     def count_active_borrows_by_member(self, member_id):
@@ -159,6 +161,37 @@ class BookDB:
         cursor.close()
         conn.close()
         return len(rows)
+    
+
+    def is_the_book_lent_and_to_member(self, id, member_id):
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+        SELECT  is_available, borrowed_by_member_id FROM book WHERE id = %s ;
+        """,(id,))
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        if row['is_available'] == False and row['borrowed_by_member_id'] == member_id:
+            return True, True
+        elif row['is_available'] == True and row['borrowed_by_member_id'] == None:
+            return False, False
+        elif row['is_available'] == False and row['borrowed_by_member_id'] != member_id:
+            return True, False
+    
+    
+    def is_borrowed(self, id):
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+        SELECT  is_available, borrowed_by_member_id FROM book WHERE id = %s ;
+        """,(id,))
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        if row['is_available'] == False and row['borrowed_by_member_id'] == member_id:
+            return True
+        return False
 
 
 #Book = BookDB() 

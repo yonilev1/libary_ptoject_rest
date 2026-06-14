@@ -1,5 +1,5 @@
 from fastapi import APIRouter,status, HTTPException, Query
-from database import member_db, member_db
+from database import book_db, member_db
 from pydantic import BaseModel
 
 class CreateMember(BaseModel):

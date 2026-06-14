@@ -18,6 +18,7 @@ def create_tables():
             email VARCHAR(255) NOT NULL UNIQUE, 
             name VARCHAR(50) NOT NULL ,
             is_active BOOLEAN NOT NULL,
+            borrowed_now INT NOT NULL,
             total_borrow INT NOT NULL
             ); 
         """)

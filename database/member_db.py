@@ -16,8 +16,8 @@ class MemeberDb:
             raise ValueError('email already exists')
 
         cursor.execute("""
-        INSERT INTO member (email, name, is_active, total_borrow)
-        VALUES(%s, %s, True, 0);
+        INSERT INTO member (email, name, is_active, borrowed_now, total_borrow)
+        VALUES(%s, %s, True, 0, 0);
         """, (data['email'], data['name']))
         conn.commit()
         did_add = cursor.lastrowid
@@ -94,7 +94,23 @@ class MemeberDb:
         row = cursor.fetchone()
         cursor.close()
         conn.close()
-        return row['total_borrow']
+        if row is not None:
+            return row['total_borrow']
+        raise KeyError('id does not exist')
+    
+
+    def count_borrowes_active_now(self, id):
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+        SELECT borrowed_now FROM member WHERE id = %s;
+        """, (id,))
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        if row is not None:
+            return row['borrowed_now']
+        raise KeyError('id does not exist')
     
 
     def update_member(self, id, data):
@@ -107,6 +123,15 @@ class MemeberDb:
 
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+        SELECT COUNT(*) FROM member WHERE id = %s
+        """,(id,))
+        row = cursor.fetchone()['COUNT(*)']
+        if row is 0:
+            return -1
+        
+        cursor.close()
+        cursor = conn.cursor()
         cursor.execute(f"""
         UPDATE member SET {in_str} WHERE id = %s;
         """, parsed_data)
@@ -131,7 +156,34 @@ class MemeberDb:
         return self.update_member(id, {'is_active': True})
     
 
-    def increment_borrows(self, id):
+    def is_active_member(self, id):
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+        SELECT is_active FROM member WHERE id = %s;
+        """, (id,))
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        return row['is_active']
+    
+
+    def decement_increment_borrows(self, id, up_or_down):
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+        SELECT borrowed_now FROM member WHERE id = %s;
+        """, (id,))
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        try:
+            return self.update_member(id, {'borrowed_now': row['borrowed_now'] + up_or_down})
+        except TypeError:
+            return row
+        
+
+    def increment_total_borrows(self, id):
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute("""
@@ -142,8 +194,8 @@ class MemeberDb:
         conn.close()
         try:
             return self.update_member(id, {'total_borrow': row['total_borrow'] + 1})
-        except TypeError as e:
-            return row
+        except TypeError:
+            raise KeyError('Member Not Found')
         
 
     def count_active_members(self):
@@ -165,7 +217,7 @@ class MemeberDb:
         conn = get_connection()
         cursor = conn.cursor(dictionary=True, buffered=True)
         cursor.execute("""
-        SELECT * FROM member ORDER BY total_borrow desc;
+        SELECT id as member_id, total_borrow as borrowed FROM member ORDER BY total_borrow desc;
         """)
         row = cursor.fetchone()
         cursor.close()
