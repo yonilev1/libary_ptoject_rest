@@ -67,7 +67,7 @@ def borrow_book(id:int, member_id:int):
                 try:
                     lend_book = new_book.set_available(id, 0, member_id)
                 except Exception as e:
-                    raise HTTPException(status.HTTP_400_BAD_REQUEST, detail='book already borroed')
+                    raise HTTPException(status.HTTP_400_BAD_REQUEST, detail='book already')
                 if lend_book == 0:
                     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
                 else:
