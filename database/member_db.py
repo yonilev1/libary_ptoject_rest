@@ -48,22 +48,6 @@ class MemeberDb:
         return True if row is not None else False
     
 
-    def member_exists(self, id):
-        """
-        check if user exist
-        """
-        conn = get_connection()
-        cursor = conn.cursor(dictionary=True)
-        my_logger.info('connecting SQL to check if user already exists') 
-        cursor.execute("""
-        SELECT * FROM member WHERE id = %s;
-        """, (id,))
-        row = cursor.fetchall()
-        cursor.close()
-        conn.close()
-        return True if len(row) > 0 else False
-    
-
     def get_all_members(self):
         """
         returns list of all members, or empty list if no members
@@ -190,6 +174,7 @@ class MemeberDb:
         """
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
+        my_logger.info('connecting SQL to count_active_members')
         cursor.execute("""
         SELECT COUNT(*) AS active FROM member WHERE is_active = True;
         """)
@@ -202,6 +187,7 @@ class MemeberDb:
     def get_top_member(self):
         conn = get_connection()
         cursor = conn.cursor(dictionary=True, buffered=True)
+        my_logger.info('connecting SQL to get_top_member')
         cursor.execute("""
         SELECT id as member_id, total_borrow as borrowed FROM member ORDER BY total_borrow desc;
         """)

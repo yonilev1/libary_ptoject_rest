@@ -1,4 +1,8 @@
 from database.db_connection import get_connection
+from logs import logger
+
+
+my_logger = logger.get_logger('library')
 
 class BookDB:
     VALID_GENRE = ['Fiction',' Non-Fiction', 'Science', 'History', 'Other']
@@ -16,6 +20,7 @@ class BookDB:
         if data['genre'] not in BookDB.VALID_GENRE:
             raise ValueError(f"genre has to be from - Fiction/Non-Fiction/Science/History/Other. not {data['genre']}")
         
+        my_logger.info('connecting SQL to create member')    
         cursor.execute("""
         INSERT INTO book (title, author, genre, is_available)
         VALUES(%s, %s, %s, True);
