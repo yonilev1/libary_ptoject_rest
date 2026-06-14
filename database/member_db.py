@@ -16,8 +16,8 @@ class MemeberDb:
             raise ValueError('email already exists')
 
         cursor.execute("""
-        INSERT INTO member (email, name, is_active, borrowed_now, total_borrow)
-        VALUES(%s, %s, True, 0, 0);
+        INSERT INTO member (email, name, is_active, total_borrow)
+        VALUES(%s, %s, True, 0);
         """, (data['email'], data['name']))
         conn.commit()
         did_add = cursor.lastrowid
@@ -166,21 +166,6 @@ class MemeberDb:
         cursor.close()
         conn.close()
         return row['is_active']
-    
-
-    def decement_increment_borrows(self, id, up_or_down):
-        conn = get_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("""
-        SELECT borrowed_now FROM member WHERE id = %s;
-        """, (id,))
-        row = cursor.fetchone()
-        cursor.close()
-        conn.close()
-        try:
-            return self.update_member(id, {'borrowed_now': row['borrowed_now'] + up_or_down})
-        except TypeError:
-            return row
         
 
     def increment_total_borrows(self, id):
@@ -223,9 +208,3 @@ class MemeberDb:
         cursor.close()
         conn.close()
         return row
-        
-
-member = MemeberDb()
-"""member.create_member({'name':'Yoni', 'email':'yoli@gmail.com'})
-member.vcreate_member({'name':'Yoni', 'email':'yoki@gmail.com'})"""
-print(member.get_top_member())

@@ -94,7 +94,7 @@ class BookDB:
         cursor.close()
         conn.close()
         if row['is_available'] is not val:
-            if row['is_available'] is 0:
+            if row['is_available'] == 0:
                 return self.update_book(id, {'is_available': val, 'borrowed_by_member_id': None})
             return self.update_book(id, {'is_available': val, 'borrowed_by_member_id': member_id})
         else:
@@ -180,23 +180,13 @@ class BookDB:
             return True, False
     
     
-    def is_borrowed(self, id):
+    def how_meny_books_member_borrowed(self, member_id):
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute("""
-        SELECT  is_available, borrowed_by_member_id FROM book WHERE id = %s ;
-        """,(id,))
+        SELECT  COUNT(*) as COUNT_BORROW FROM book WHERE borrowed_by_member_id = %s ;
+        """,(member_id,))
         row = cursor.fetchone()
         cursor.close()
         conn.close()
-        if row['is_available'] == False and row['borrowed_by_member_id'] == member_id:
-            return True
-        return False
-
-
-#Book = BookDB() 
-#Book.create_book({'title':'hg', 'author':'hg', 'genre':'Other'})
-#print(Book.count_total_books(), Book.count_available_books())
-"""print(Book.set_available(22, False, 17))
-print(Book.get_book_by_id(21))
-print(Book.count_active_borrows_by_member(17))"""
+        return row['COUNT_BORROW']
