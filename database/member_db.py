@@ -2,8 +2,7 @@ from database.db_connection import get_connection
 from logs import logger
 
 
-my_logger = logger.get_logger('library')
-
+my_logger = logger.get_logger('library_member_db')
 class MemeberDb:
     def create_member(self, data):
         """
@@ -20,7 +19,7 @@ class MemeberDb:
             raise ValueError('email already exists')
 
         my_logger.info('connecting SQL to create member')    
-        my_logger.exception(f'couldnt deactivate member {e}')
+        my_logger.info('connecting SQL to check if create member') 
         cursor.execute("""
         INSERT INTO member (email, name, is_active, total_borrow)
         VALUES(%s, %s, True, 0);
@@ -109,7 +108,7 @@ class MemeberDb:
         SELECT COUNT(*) FROM member WHERE id = %s
         """,(id,))
         row = cursor.fetchone()['COUNT(*)']
-        if row is 0:
+        if row == 0:
             return -1
         
         cursor.close()

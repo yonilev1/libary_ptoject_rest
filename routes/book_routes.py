@@ -16,7 +16,7 @@ class UpdateBook(BaseModel):
     is_available:bool | None = None
 
 router = APIRouter()
-my_logger = logger.get_logger('library')
+my_logger = logger.get_logger('library_book_routes')
 
 @router.post('/books', status_code=status.HTTP_201_CREATED)
 def create_book(book : CreateBook):

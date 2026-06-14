@@ -14,8 +14,7 @@ class UpdateMember(BaseModel):
     total_borrow:int | None = None
 
 router = APIRouter()
-my_logger = logger.get_logger('library')
-
+my_logger = logger.get_logger('library_member_routes')
 
 @router.post('/members', status_code=status.HTTP_201_CREATED)
 def create_member(member : CreateMember):
@@ -65,7 +64,7 @@ def update_member(id:int, member:UpdateMember = Query(...)):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, detail=str(e))
     if updated_member == 0:
         my_logger.error(f'member is already {member}')
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail='member is already {member}')
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'member is already {dict_member}')
     elif updated_member == -1:
         my_logger.error(f'member {id} does not exist')
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)

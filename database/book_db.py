@@ -2,7 +2,7 @@ from database.db_connection import get_connection
 from logs import logger
 
 
-my_logger = logger.get_logger('library')
+my_logger = logger.get_logger('library_book_db')
 
 class BookDB:
     VALID_GENRE = ['Fiction',' Non-Fiction', 'Science', 'History', 'Other']
@@ -20,7 +20,7 @@ class BookDB:
         if data['genre'] not in BookDB.VALID_GENRE:
             raise ValueError(f"genre has to be from - Fiction/Non-Fiction/Science/History/Other. not {data['genre']}")
         
-        my_logger.info('connecting SQL to create member')    
+        my_logger.info('connecting SQL to create book')    
         cursor.execute("""
         INSERT INTO book (title, author, genre, is_available)
         VALUES(%s, %s, %s, True);
@@ -38,6 +38,7 @@ class BookDB:
         """
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
+        my_logger.info('connecting SQL to get_all_books')
         cursor.execute("""
         SELECT * FROM book;
         """)
@@ -53,6 +54,7 @@ class BookDB:
         """
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
+        my_logger.info('connecting SQL to get_book_by_id')
         cursor.execute("""
         SELECT * FROM book WHERE id = %s;
         """, (id,))
@@ -75,6 +77,7 @@ class BookDB:
 
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
+        my_logger.info('connecting SQL to update_book')
         cursor.execute(f"""
         UPDATE book SET {in_str} WHERE id = %s;
         """, parsed_data)
@@ -92,6 +95,7 @@ class BookDB:
         """
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
+        my_logger.info('connecting SQL to set_available')
         cursor.execute(f"""
         SELECT is_available FROM book WHERE id = %s;
         """, (id,))
@@ -113,6 +117,7 @@ class BookDB:
         """
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
+        my_logger.info('connecting SQL to count_total_books')
         cursor.execute("""
         SELECT COUNT(*) AS total FROM book;
         """)
@@ -128,6 +133,7 @@ class BookDB:
         """
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
+        my_logger.info('connecting SQL to count_available_books')
         cursor.execute("""
         SELECT COUNT(*) AS available FROM book WHERE is_available = True;
         """)
@@ -147,6 +153,7 @@ class BookDB:
     def count_by_genre(self):
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
+        my_logger.info('connecting SQL to count_by_genre')
         cursor.execute("""
         SELECT genre as Genre, COUNT(*) as COUNT FROM book GROUP BY genre ;
         """)
@@ -159,6 +166,7 @@ class BookDB:
     def count_active_borrows_by_member(self, member_id):
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
+        my_logger.info('connecting SQL to count_active_borrows_by_member')
         cursor.execute("""
         SELECT * FROM book WHERE borrowed_by_member_id = %s ;
         """, (member_id,))
@@ -171,6 +179,7 @@ class BookDB:
     def is_the_book_lent_and_to_member(self, id, member_id):
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
+        my_logger.info('connecting SQL to is_the_book_lent_and_to_member')
         cursor.execute("""
         SELECT  is_available, borrowed_by_member_id FROM book WHERE id = %s ;
         """,(id,))
@@ -188,6 +197,7 @@ class BookDB:
     def how_meny_books_member_borrowed(self, member_id):
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
+        my_logger.info('connecting SQL to how_meny_books_member_borrowed')
         cursor.execute("""
         SELECT  COUNT(*) as COUNT_BORROW FROM book WHERE borrowed_by_member_id = %s ;
         """,(member_id,))
