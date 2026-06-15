@@ -100,9 +100,11 @@ class MemeberDb:
         """
         update member by id, return 1 if updates else 0
         """
+        if not data:
+                raise ValueError('got no fields to update')
         in_parts = [f'{key} = %s' for key in data.keys()]
         in_str = ", ".join(in_parts)
-        parsed_data =list(data.values()) + [id]
+        parsed_data = list(data.values()) + [id]
 
         conn = connect.get_connection()
         cursor = conn.cursor(dictionary=True)

@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from routes import book_routes, member_routes, report_routes
 import uvicorn
-from logs import logger
 from database import db_connection, db_initializer
 
 app = FastAPI()

@@ -69,6 +69,8 @@ class BookDB:
         """
         update book by id, return 1 if updates else 0
         """
+        if not data:
+            raise ValueError('got no fields to update')
         if 'genre' in data.keys() and  data['genre'] not in BookDB.VALID_GENRE:
             raise ValueError(f"genre has to be from - Fiction/Non-Fiction/Science/History/Other. not {data['genre']}")
         
